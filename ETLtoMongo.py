@@ -45,8 +45,8 @@ def createRedactedView():
     db.command(viewCommand)
 
 mysqlUser="root"
-mysqlPassword=""
-mysqlHost=""
+mysqlPassword="1sqw2aA9!"
+mysqlHost="192.168.56.91"
 mysqlDatabase="Chinook"
 myconn = mysql.connector.connect(user=mysqlUser,password=mysqlPassword,host=mysqlHost, database=mysqlDatabase)
 
@@ -108,12 +108,14 @@ cursorDict.close()
 print ("Inserting Tracks to each Invoice.")
 print ("Also Creating a index for the track ID")
 result = connMongo("Customers").create_index([ ("tracks.Trackid" , pymongo.ASCENDING)] )
-query = ( "select iv.InvoiceId, iv.Trackid, iv.UnitPrice, iv.Quantity, t.Name, t.Composer from  InvoiceLine as iv, Track as t where iv.Trackid = t.TrackId;")
+#query = ( "select iv.InvoiceId, iv.Trackid, iv.UnitPrice, iv.Quantity, t.Name, t.Composer from InvoiceLine as iv, Track as t where iv.Trackid = t.TrackId;")
+query = ( "select iv.InvoiceId, iv.Trackid, iv.UnitPrice, iv.Quantity, t.Name, t.Composer, ar.Name as Artist, g.Name as genre, m.Name as MediaType, a.Title as Album from  InvoiceLine as iv, Track as t , Genre as g , MediaType as m , Album as a, Artist as ar where iv.Trackid = t.TrackId and t.GenreId = g.GenreId and t.MediaTypeId = m.MediaTypeId and t.AlbumId = a.AlbumId and a.ArtistId = ar.ArtistId;")
 cursorDict = myconn.cursor(dictionary=True)
 cursorDict.execute(query)
 for record in cursorDict:
     unitPrice = record['UnitPrice']
     record['UnitPrice'] = Decimal128(unitPrice)
+    del record['Trackid']
     updateTracksToMongo(record, record['InvoiceId'], "Customers" )
 cursorDict.close()
 
