@@ -1,0 +1,71 @@
+schema:
+- db: Chinook
+  tables:
+  - table: Employees
+    collection: Employees
+    pipeline: []
+    columns:
+    - Name: Address
+      MongoType: string
+      SqlName: Address
+      SqlType: varchar
+    - Name: BirthDate
+      MongoType: date
+      SqlName: BirthDate
+      SqlType: timestamp
+    - Name: City
+      MongoType: string
+      SqlName: City
+      SqlType: varchar
+    - Name: Country
+      MongoType: string
+      SqlName: Country
+      SqlType: varchar
+    - Name: Email
+      MongoType: string
+      SqlName: Email
+      SqlType: varchar
+    - Name: EmployeeId
+      MongoType: int
+      SqlName: EmployeeId
+      SqlType: int
+    - Name: Fax
+      MongoType: string
+      SqlName: Fax
+      SqlType: varchar
+    - Name: FirstName
+      MongoType: string
+      SqlName: FirstName
+      SqlType: varchar
+    - Name: HireDate
+      MongoType: date
+      SqlName: HireDate
+      SqlType: timestamp
+    - Name: LastName
+      MongoType: string
+      SqlName: LastName
+      SqlType: varchar
+    - Name: Phone
+      MongoType: string
+      SqlName: Phone
+      SqlType: varchar
+    - Name: PostalCode
+      MongoType: string
+      SqlName: PostalCode
+      SqlType: varchar
+    - Name: ReportsTo
+      MongoType: int
+      SqlName: ReportsTo
+      SqlType: int
+    - Name: State
+      MongoType: string
+      SqlName: State
+      SqlType: varchar
+    - Name: Title
+      MongoType: string
+      SqlName: Title
+      SqlType: varchar
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
