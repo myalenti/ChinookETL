@@ -10,8 +10,16 @@ import pymongo
 from bson.decimal128 import Decimal128 
 from bson.son import SON
 from functools import total_ordering
+import getopt
+import sys
 
+def usage():
+    print "python ETLtoMongo --mongoUri <mongodb://<ip>:<port> --mysqlIP <ip>"
+    print ""
+    
 
+  
+    
 
 def connMongo(coll):
     conn = MongoClient(mongoUri)
@@ -51,6 +59,30 @@ mysqlDatabase="Chinook"
 myconn = mysql.connector.connect(user=mysqlUser,password=mysqlPassword,host=mysqlHost, database=mysqlDatabase)
 mongoUri = "mongodb://192.168.56.91:27017"
 mongoDB = "mongoChinook"
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], "", ["mongoUri=", "mysqlIP="])
+    
+except getopt.GetoptError:
+    print "You provided invalid command line switches."
+    usage()
+    exit(2)
+
+for opt, arg in opts:
+    #print "Tuple is " , opt, arg
+    if opt in ("--mongoUri"):
+        print "setting mongoUri to:" , arg
+        mongoUri = str(arg)
+    elif opt in ("--mysqlIP"):
+        print "setting mysqlHost to:" , arg
+        mysqlHost = str(arg)
+    elif opt in ("-h"):
+        usage()
+        exit()
+    else:
+        usage()
+        exit(2)
+
 print "Using Version " + version
 ########## Moving the Employee Table####
 print ("Moving Employees as is. No schema refactoring - Its very Flat as is")
