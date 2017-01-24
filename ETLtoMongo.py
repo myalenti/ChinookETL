@@ -14,8 +14,8 @@ from functools import total_ordering
 
 
 def connMongo(coll):
-    conn = MongoClient()
-    col = conn['Chinook'][coll]
+    conn = MongoClient(mongoUri)
+    col = conn[mongoDB][coll]
     return col
 
 def loadToMongo(someDict, coll):
@@ -34,8 +34,8 @@ def updateTracksToMongo(someDict, invoiceId, coll):
     result = col.update_one(filter, { "$addToSet" : { 'tracks'  : someDict}})
 
 def createRedactedView():
-    conn = MongoClient()
-    db = conn['Chinook']
+    conn = MongoClient(mongoUri)
+    db = conn[mongoDB]
     #x = db.command("buildinfo")
     #print x
     viewCommand = SON()
@@ -49,7 +49,8 @@ mysqlPassword="1sqw2aA9!"
 mysqlHost="192.168.56.91"
 mysqlDatabase="Chinook"
 myconn = mysql.connector.connect(user=mysqlUser,password=mysqlPassword,host=mysqlHost, database=mysqlDatabase)
-
+mongoUri = "mongodb://192.168.56.91:27017"
+mongoDB = "mongoChinook"
 print "Using Version " + version
 ########## Moving the Employee Table####
 print ("Moving Employees as is. No schema refactoring - Its very Flat as is")
@@ -57,7 +58,6 @@ query = ( "select * from Employee")
 cursorDict = myconn.cursor(dictionary=True)
 cursorDict.execute(query)
 for record in cursorDict:
-    
     loadToMongo(record,"Employees")    
 cursorDict.close()
 #########
