@@ -46,6 +46,7 @@ def updateTracksToMongo(someDict, invoiceId, coll):
     result = col.update_one(filter, { "$addToSet" : { 'tracks'  : someDict}})
 
 def createRedactedView():
+    print "Creating a view for redacted customer information"
     conn = MongoClient(mongoUri)
     db = conn[mongoDB]
     #x = db.command("buildinfo")
