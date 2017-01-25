@@ -23,9 +23,13 @@ biPort=3307
 #print it
 echo "BI connector ip is $biIP:$biPort"
 
-read -p "Ready to run ETL... press enter " done
+read -p "Ready to run Python based ETL... press enter " done
 echo "running"
 ./ETLtoMongo.py --mysqlIP=$mysql --mongoUri=mongodb://$mongoIP:$mongoPort --mysqlPassword=$mysqlPassword
+
+read -p "Ready to run Java based ETL... press enter " done
+echo "running"
+java -jar RDBMS_2_MongoDB.jar Chinook "mysql://$mysql:$mysqlPort?user=root&password=$mysqlPassword" "mongodb://$mongoIP:$mongoPort"
 
 read -p "Press Enter to terminate demo" done
 read -p "Just Making sure... Press Enter to terminate demo" done
