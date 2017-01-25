@@ -92,7 +92,7 @@ if __name__ == '__main__':
     print 'Attempting mysql connection: '    
     while tryConnect:
         sys.stdout.write('.')
-	sys.stdout.flush()
+        sys.stdout.flush()
         try:        
             myconn = mysql.connector.connect(user=mysqlUser,password=mysqlPassword,host=mysqlHost, database=mysqlDatabase)
             tryConnect = False
