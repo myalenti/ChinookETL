@@ -25,7 +25,7 @@ echo "BI connector ip is $biIP:$biPort"
 
 read -p "Ready to run ETL... press enter " done
 echo "running"
-./ETLtoMongo.py --mysqlIP=172.17.0.2 --mongoUri=mongodb://172.17.0.3:27017
+./ETLtoMongo.py --mysqlIP=$mysql --mongoUri=mongodb://$mongoIP:$mongoPort
 
 read -p "Press Enter to terminate demo" done
 read -p "Just Making sure... Press Enter to terminate demo" done
