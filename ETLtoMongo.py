@@ -68,7 +68,7 @@ if __name__ == '__main__':
     mongoDB = "mongoChinook"
     tryConnect = True
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "", ["mongoUri=", "mysqlIP="])
+        opts, args = getopt.getopt(sys.argv[1:], "", ["mongoUri=", "mysqlIP=" , "mysqlPassword="])
         
     except getopt.GetoptError:
         print "You provided invalid command line switches."
@@ -83,6 +83,9 @@ if __name__ == '__main__':
         elif opt in ("--mysqlIP"):
             print "setting mysqlHost to:" , arg
             mysqlHost = str(arg)
+        elif opt in ("--mysqlPassword"):
+            print "setting mysqlPassword to:" , arg
+            mysqlPassword = str(arg)
         elif opt in ("-h"):
             usage()
             exit()
