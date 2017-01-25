@@ -1,8 +1,8 @@
 #!/usr/bin/sh
 #set -x
-
+mysqlPassword='password123'
 #lauch Chinook DB and get IP address/port
-docker run -d --name mysql -e MYSQL_ROOT_PASSWORD='password123!' -p 3306:3306 myalenti/chinookdemo
+docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=$mysqlPassword -p 3306:3306 myalenti/chinookdemo
 mysql=$(docker inspect mysql | python -c "import sys, json; print json.load(sys.stdin)[0]['NetworkSettings']['IPAddress']; exit()")
 mysqlPort=3306
 
@@ -25,7 +25,7 @@ echo "BI connector ip is $biIP:$biPort"
 
 read -p "Ready to run ETL... press enter " done
 echo "running"
-./ETLtoMongo.py --mysqlIP=$mysql --mongoUri=mongodb://$mongoIP:$mongoPort
+./ETLtoMongo.py --mysqlIP=$mysql --mongoUri=mongodb://$mongoIP:$mongoPort --mysqlPassword=$mysqlPassword
 
 read -p "Press Enter to terminate demo" done
 read -p "Just Making sure... Press Enter to terminate demo" done
