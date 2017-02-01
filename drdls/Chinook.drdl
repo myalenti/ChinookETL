@@ -345,14 +345,171 @@ schema:
       MongoType: bson.ObjectId
       SqlName: _id
       SqlType: varchar
+  - table: customers
+    collection: customers
+    pipeline: []
+    columns:
+    - Name: Address
+      MongoType: string
+      SqlName: Address
+      SqlType: varchar
+    - Name: BillingInfo.#Orders
+      MongoType: int
+      SqlName: BillingInfo.#Orders
+      SqlType: int
+    - Name: BillingInfo.AvgOrderValue
+      MongoType: bson.Decimal128
+      SqlName: BillingInfo.AvgOrderValue
+      SqlType: decimal128
+    - Name: BillingInfo.LastOrderDate
+      MongoType: date
+      SqlName: BillingInfo.LastOrderDate
+      SqlType: timestamp
+    - Name: BillingInfo.TotalSpending
+      MongoType: bson.Decimal128
+      SqlName: BillingInfo.TotalSpending
+      SqlType: decimal128
+    - Name: City
+      MongoType: string
+      SqlName: City
+      SqlType: varchar
+    - Name: Company
+      MongoType: string
+      SqlName: Company
+      SqlType: varchar
+    - Name: Country
+      MongoType: string
+      SqlName: Country
+      SqlType: varchar
+    - Name: CustomerId
+      MongoType: int
+      SqlName: CustomerId
+      SqlType: int
+    - Name: Email
+      MongoType: string
+      SqlName: Email
+      SqlType: varchar
+    - Name: Fax
+      MongoType: string
+      SqlName: Fax
+      SqlType: varchar
+    - Name: FirstName
+      MongoType: string
+      SqlName: FirstName
+      SqlType: varchar
+    - Name: LastName
+      MongoType: string
+      SqlName: LastName
+      SqlType: varchar
+    - Name: Phone
+      MongoType: string
+      SqlName: Phone
+      SqlType: varchar
+    - Name: PostalCode
+      MongoType: string
+      SqlName: PostalCode
+      SqlType: varchar
+    - Name: State
+      MongoType: string
+      SqlName: State
+      SqlType: varchar
+    - Name: SupportRepId
+      MongoType: int
+      SqlName: SupportRepId
+      SqlType: int
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
+  - table: customers_Invoices
+    collection: customers
+    pipeline:
+    - $unwind:
+        includeArrayIndex: Invoices_idx
+        path: $Invoices
+    columns:
+    - Name: Invoices.BillingCity
+      MongoType: string
+      SqlName: Invoices.BillingCity
+      SqlType: varchar
+    - Name: Invoices.BillingCountry
+      MongoType: string
+      SqlName: Invoices.BillingCountry
+      SqlType: varchar
+    - Name: Invoices.BillingPostalCode
+      MongoType: string
+      SqlName: Invoices.BillingPostalCode
+      SqlType: varchar
+    - Name: Invoices.BillingState
+      MongoType: string
+      SqlName: Invoices.BillingState
+      SqlType: varchar
+    - Name: Invoices.InvoiceDate
+      MongoType: date
+      SqlName: Invoices.InvoiceDate
+      SqlType: timestamp
+    - Name: Invoices.InvoiceId
+      MongoType: int
+      SqlName: Invoices.InvoiceId
+      SqlType: int
+    - Name: Invoices.Total
+      MongoType: bson.Decimal128
+      SqlName: Invoices.Total
+      SqlType: decimal128
+    - Name: Invoices_idx
+      MongoType: int
+      SqlName: Invoices_idx
+      SqlType: int
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
+  - table: customers_Invoices_InvoiceLines
+    collection: customers
+    pipeline:
+    - $unwind:
+        includeArrayIndex: Invoices_idx
+        path: $Invoices
+    - $unwind:
+        includeArrayIndex: Invoices.InvoiceLines_idx
+        path: $Invoices.InvoiceLines
+    columns:
+    - Name: Invoices.InvoiceLines.InvoiceLineId
+      MongoType: int
+      SqlName: Invoices.InvoiceLines.InvoiceLineId
+      SqlType: int
+    - Name: Invoices.InvoiceLines.Quantity
+      MongoType: int
+      SqlName: Invoices.InvoiceLines.Quantity
+      SqlType: int
+    - Name: Invoices.InvoiceLines.Track.Id
+      MongoType: int
+      SqlName: Invoices.InvoiceLines.Track.Id
+      SqlType: int
+    - Name: Invoices.InvoiceLines.Track.Name
+      MongoType: string
+      SqlName: Invoices.InvoiceLines.Track.Name
+      SqlType: varchar
+    - Name: Invoices.InvoiceLines.Track.UnitPrice
+      MongoType: bson.Decimal128
+      SqlName: Invoices.InvoiceLines.Track.UnitPrice
+      SqlType: decimal128
+    - Name: Invoices.InvoiceLines_idx
+      MongoType: int
+      SqlName: Invoices.InvoiceLines_idx
+      SqlType: int
+    - Name: Invoices_idx
+      MongoType: int
+      SqlName: Invoices_idx
+      SqlType: int
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
   - table: invoices
     collection: invoices
     pipeline: []
     columns:
-    - Name: BillingAddress
-      MongoType: string
-      SqlName: BillingAddress
-      SqlType: varchar
     - Name: BillingCity
       MongoType: string
       SqlName: BillingCity
@@ -385,6 +542,10 @@ schema:
       MongoType: string
       SqlName: Customer.Phone
       SqlType: varchar
+    - Name: InvoiceDate
+      MongoType: date
+      SqlName: InvoiceDate
+      SqlType: timestamp
     - Name: InvoiceId
       MongoType: int
       SqlName: InvoiceId
@@ -455,10 +616,6 @@ schema:
         includeArrayIndex: Tracks_idx
         path: $Tracks
     columns:
-    - Name: Tracks.Album.Artist
-      MongoType: string
-      SqlName: Tracks.Album.Artist
-      SqlType: varchar
     - Name: Tracks.Album.Title
       MongoType: string
       SqlName: Tracks.Album.Title
@@ -487,14 +644,44 @@ schema:
       MongoType: bson.ObjectId
       SqlName: _id
       SqlType: varchar
+  - table: playlists_Tracks_Album_Artist
+    collection: playlists
+    pipeline:
+    - $unwind:
+        includeArrayIndex: Tracks_idx
+        path: $Tracks
+    - $unwind:
+        includeArrayIndex: Tracks.Album.Artist_idx
+        path: $Tracks.Album.Artist
+    columns:
+    - Name: Tracks.Album.Artist.ArtistId
+      MongoType: int
+      SqlName: Tracks.Album.Artist.ArtistId
+      SqlType: int
+    - Name: Tracks.Album.Artist.Name
+      MongoType: string
+      SqlName: Tracks.Album.Artist.Name
+      SqlType: varchar
+    - Name: Tracks.Album.Artist._id
+      MongoType: bson.ObjectId
+      SqlName: Tracks.Album.Artist._id
+      SqlType: varchar
+    - Name: Tracks.Album.Artist_idx
+      MongoType: int
+      SqlName: Tracks.Album.Artist_idx
+      SqlType: int
+    - Name: Tracks_idx
+      MongoType: int
+      SqlName: Tracks_idx
+      SqlType: int
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
   - table: tracks
     collection: tracks
     pipeline: []
     columns:
-    - Name: Album.Artist
-      MongoType: string
-      SqlName: Album.Artist
-      SqlType: varchar
     - Name: Album.Title
       MongoType: string
       SqlName: Album.Title
@@ -531,6 +718,33 @@ schema:
       MongoType: bson.Decimal128
       SqlName: UnitPrice
       SqlType: decimal128
+    - Name: _id
+      MongoType: bson.ObjectId
+      SqlName: _id
+      SqlType: varchar
+  - table: tracks_Album_Artist
+    collection: tracks
+    pipeline:
+    - $unwind:
+        includeArrayIndex: Album.Artist_idx
+        path: $Album.Artist
+    columns:
+    - Name: Album.Artist.ArtistId
+      MongoType: int
+      SqlName: Album.Artist.ArtistId
+      SqlType: int
+    - Name: Album.Artist.Name
+      MongoType: string
+      SqlName: Album.Artist.Name
+      SqlType: varchar
+    - Name: Album.Artist._id
+      MongoType: bson.ObjectId
+      SqlName: Album.Artist._id
+      SqlType: varchar
+    - Name: Album.Artist_idx
+      MongoType: int
+      SqlName: Album.Artist_idx
+      SqlType: int
     - Name: _id
       MongoType: bson.ObjectId
       SqlName: _id
